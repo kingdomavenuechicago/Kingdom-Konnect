@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-// ── SUPABASE CONFIG ── Replace these with your project values from supabase.com
-const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY || "";
-const supabase = SUPABASE_URL ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+// ── SUPABASE CONFIG ──────────────────────────────────────────────────────────
+const SUPABASE_URL = "https://xvxjlyntoynhhejdzrrk.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2eGpseW50b3luaGhlamR6cnJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNTQwMjMsImV4cCI6MjA4ODgzMDAyM30.3l81ik7M2HzurFvTJUCm4DAPksUtEEJ73VwQv4foHnQ";
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ── BRAND ────────────────────────────────────────────────────────────────────
 const B = "#6B1A2A";
