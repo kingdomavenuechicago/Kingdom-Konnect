@@ -1220,7 +1220,150 @@ function ExportView({ referrals, navigators, partners }) {
 }
 
 // ── APP ROOT ──────────────────────────────────────────────────────────────────
+// ── PUBLIC INTAKE PAGE ────────────────────────────────────────────────────────
+function PublicIntake() {
+  const [form, setForm] = useState({
+    source: "family", contactName: "", contactPhone: "", contactEmail: "",
+    studentGrade: "", school: "", address: "",
+    needCategories: [], urgency: "standard", notes: ""
+  });
+  const [submitted, setSubmitted] = useState(null);
+  const [saving, setSaving] = useState(false);
+
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const toggleNeed = n => set("needCategories", form.needCategories.includes(n) ? form.needCategories.filter(x => x !== n) : [...form.needCategories, n]);
+
+  const handleSubmit = async () => {
+    if (!form.contactName || !form.contactPhone || form.needCategories.length === 0) {
+      alert("Please fill in contact name, phone, and at least one area of need.");
+      return;
+    }
+    setSaving(true);
+    const today = new Date().toISOString().split("T")[0];
+    const ref = { ...form, id: generateId(), status: "new", dateReceived: today, handoffDate: null, followUps: [], createdAt: Date.now(), assignedNavigator: "", partnerOrg: "" };
+    const existing = await load("kk_referrals", []);
+    await save("kk_referrals", [...existing, ref]);
+    setSaving(false);
+    setSubmitted(ref);
+  };
+
+  if (submitted) return (
+    <div style={{minHeight:"100vh",background:"#1a0a0f",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif",padding:"24px"}}>
+      <div style={{background:"#2a0a12",border:"2px solid #C9A84C",borderRadius:"16px",padding:"48px 40px",textAlign:"center",maxWidth:"480px",width:"100%"}}>
+        <div style={{fontSize:"3rem",marginBottom:"16px"}}>✅</div>
+        <div style={{fontFamily:"'Playfair Display',serif",color:"#C9A84C",fontSize:"1.5rem",fontWeight:"700",marginBottom:"12px"}}>Referral Submitted</div>
+        <p style={{color:"#e8c5c5",marginBottom:"8px"}}>Thank you! A Kingdom Konnect navigator will reach out within 24–48 hours.</p>
+        <p style={{color:"#C9A84C",fontSize:"0.85rem",marginBottom:"24px"}}>Reference: <strong>{submitted.id.split("_").slice(-1)[0].toUpperCase()}</strong></p>
+        <button onClick={() => setSubmitted(null)} style={{background:"#6B1A2A",color:"#C9A84C",border:"none",borderRadius:"8px",padding:"12px 24px",fontSize:"1rem",fontWeight:"600",cursor:"pointer"}}>
+          Submit Another Referral
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{minHeight:"100vh",background:"#1a0a0f",fontFamily:"'DM Sans',sans-serif",padding:"24px"}}>
+      <div style={{maxWidth:"600px",margin:"0 auto"}}>
+        {/* Header */}
+        <div style={{textAlign:"center",marginBottom:"32px"}}>
+          <div style={{fontSize:"2rem",marginBottom:"8px"}}>👑</div>
+          <div style={{fontFamily:"'Playfair Display',serif",color:"#C9A84C",fontSize:"1.8rem",fontWeight:"700"}}>Kingdom Konnect</div>
+          <div style={{color:"#d4a0a0",fontSize:"0.9rem",marginTop:"4px"}}>Request Support · Kingdom Avenue Inc.</div>
+        </div>
+
+        <div style={{background:"#2a0a12",border:"1px solid #6B1A2A",borderRadius:"12px",padding:"24px",marginBottom:"16px"}}>
+          <div style={{color:"#C9A84C",fontWeight:"600",marginBottom:"16px",fontSize:"1rem"}}>Referral Source</div>
+          <div style={{display:"flex",gap:"10px"}}>
+            {[["family","👨‍👩‍👧 Family / Self-Referral"],["cps","🏫 CPS School"]].map(([v,l]) => (
+              <div key={v} onClick={() => set("source",v)} style={{flex:1,padding:"12px",borderRadius:"8px",border: form.source===v ? "2px solid #C9A84C" : "2px solid #3a1a22",background: form.source===v ? "#3a1a22" : "transparent",color: form.source===v ? "#C9A84C" : "#d4a0a0",cursor:"pointer",textAlign:"center",fontSize:"0.9rem"}}>
+                {l}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {form.source === "cps" && (
+          <div style={{background:"#2a0a12",border:"1px solid #6B1A2A",borderRadius:"12px",padding:"24px",marginBottom:"16px",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"16px"}}>
+            <div>
+              <label style={{color:"#C9A84C",fontSize:"0.85rem",display:"block",marginBottom:"6px"}}>CPS School</label>
+              <select value={form.school} onChange={e => set("school",e.target.value)} style={{width:"100%",padding:"10px",background:"#1a0a0f",border:"1px solid #6B1A2A",borderRadius:"6px",color:"#e8c5c5",fontSize:"0.9rem"}}>
+                <option value="">Select school…</option>
+                {CPS_SCHOOLS.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{color:"#C9A84C",fontSize:"0.85rem",display:"block",marginBottom:"6px"}}>Student Grade</label>
+              <select value={form.studentGrade} onChange={e => set("studentGrade",e.target.value)} style={{width:"100%",padding:"10px",background:"#1a0a0f",border:"1px solid #6B1A2A",borderRadius:"6px",color:"#e8c5c5",fontSize:"0.9rem"}}>
+                <option value="">Select…</option>
+                {["K","1","2","3","4","5","6","7","8","9","10","11","12"].map(g => <option key={g} value={g}>{g}</option>)}
+              </select>
+            </div>
+          </div>
+        )}
+
+        <div style={{background:"#2a0a12",border:"1px solid #6B1A2A",borderRadius:"12px",padding:"24px",marginBottom:"16px"}}>
+          <div style={{color:"#C9A84C",fontWeight:"600",marginBottom:"16px"}}>Contact Information</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"16px"}}>
+            {[
+              ["contactName","Contact Name *","Parent, guardian, or student name","text"],
+              ["contactPhone","Phone Number *","(773) 000-0000","tel"],
+              ["contactEmail","Email (optional)","email@example.com","email"],
+              ["address","Address / Neighborhood","Englewood or general area","text"],
+            ].map(([k,label,ph,type]) => (
+              <div key={k}>
+                <label style={{color:"#C9A84C",fontSize:"0.85rem",display:"block",marginBottom:"6px"}}>{label}</label>
+                <input type={type} placeholder={ph} value={form[k]} onChange={e => set(k,e.target.value)}
+                  style={{width:"100%",padding:"10px",background:"#1a0a0f",border:"1px solid #6B1A2A",borderRadius:"6px",color:"#e8c5c5",fontSize:"0.9rem",boxSizing:"border-box"}} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{background:"#2a0a12",border:"1px solid #6B1A2A",borderRadius:"12px",padding:"24px",marginBottom:"16px"}}>
+          <div style={{color:"#C9A84C",fontWeight:"600",marginBottom:"16px"}}>Areas of Need * <span style={{color:"#d4a0a0",fontWeight:"400",fontSize:"0.85rem"}}>(select all that apply)</span></div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:"8px"}}>
+            {NEED_CATEGORIES.map(n => (
+              <div key={n} onClick={() => toggleNeed(n)} style={{padding:"10px 12px",borderRadius:"8px",border: form.needCategories.includes(n) ? "2px solid #C9A84C" : "2px solid #3a1a22",background: form.needCategories.includes(n) ? "#3a1a22" : "transparent",color: form.needCategories.includes(n) ? "#C9A84C" : "#d4a0a0",cursor:"pointer",fontSize:"0.85rem",display:"flex",alignItems:"center",gap:"8px"}}>
+                <input type="checkbox" readOnly checked={form.needCategories.includes(n)} style={{accentColor:"#C9A84C"}} /> {n}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{background:"#2a0a12",border:"1px solid #6B1A2A",borderRadius:"12px",padding:"24px",marginBottom:"24px"}}>
+          <div style={{color:"#C9A84C",fontWeight:"600",marginBottom:"16px"}}>Urgency</div>
+          <select value={form.urgency} onChange={e => set("urgency",e.target.value)} style={{width:"100%",padding:"10px",background:"#1a0a0f",border:"1px solid #6B1A2A",borderRadius:"6px",color:"#e8c5c5",fontSize:"0.9rem",marginBottom:"16px"}}>
+            <option value="standard">Standard</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent — Immediate Need</option>
+          </select>
+          <label style={{color:"#C9A84C",fontSize:"0.85rem",display:"block",marginBottom:"6px"}}>Additional Notes</label>
+          <textarea placeholder="Any additional context about your situation or specific needs…" value={form.notes} onChange={e => set("notes",e.target.value)}
+            style={{width:"100%",padding:"10px",background:"#1a0a0f",border:"1px solid #6B1A2A",borderRadius:"6px",color:"#e8c5c5",fontSize:"0.9rem",minHeight:"80px",boxSizing:"border-box",resize:"vertical"}} />
+        </div>
+
+        <button onClick={handleSubmit} disabled={saving} style={{width:"100%",padding:"14px",background:"#6B1A2A",color:"#C9A84C",border:"2px solid #C9A84C",borderRadius:"8px",fontSize:"1rem",fontWeight:"700",cursor:saving?"not-allowed":"pointer",opacity:saving?0.7:1}}>
+          {saving ? "Submitting…" : "Submit Referral →"}
+        </button>
+        <p style={{color:"#d4a0a0",fontSize:"0.8rem",textAlign:"center",marginTop:"12px"}}>
+          Kingdom Avenue Inc. · Englewood, Chicago · kingdomavenuechicago@gmail.com
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── ROUTER ────────────────────────────────────────────────────────────────────
 export default function App() {
+  const isStaff = window.location.pathname === "/staff" || window.location.pathname.startsWith("/staff/");
+  if (!isStaff) return <PublicIntake />;
+  return <StaffApp />;
+}
+
+function StaffApp() {
+  const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem("kk_auth") === "true");
+  const [pin, setPin] = useState("");
+  const [pinError, setPinError] = useState(false);
   const [view, setView] = useState("intake");
   const [referrals, setReferrals] = useState([]);
   const [partners, setPartners] = useState([]);
@@ -1276,6 +1419,43 @@ export default function App() {
     partners: ["Partner Directory", `${partners.length} partner organizations`],
     export: ["Export & Reports", "Download data for CPS reporting and funders"],
   };
+
+  const handlePin = () => {
+    if (pin === "9195") {
+      sessionStorage.setItem("kk_auth", "true");
+      setUnlocked(true);
+      setPinError(false);
+    } else {
+      setPinError(true);
+      setPin("");
+    }
+  };
+
+  if (!unlocked) return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100vh",background:"#1a0a0f",fontFamily:"'DM Sans', sans-serif"}}>
+      <div style={{background:"#2a0a12",border:"2px solid #C9A84C",borderRadius:"16px",padding:"48px 40px",textAlign:"center",maxWidth:"360px",width:"90%"}}>
+        <div style={{fontSize:"2rem",marginBottom:"8px"}}>👑</div>
+        <div style={{fontFamily:"'Playfair Display', serif",color:"#C9A84C",fontSize:"1.5rem",fontWeight:"700",marginBottom:"4px"}}>Kingdom Konnect</div>
+        <div style={{color:"#d4a0a0",fontSize:"0.85rem",marginBottom:"32px"}}>Navigator Portal · Kingdom Avenue Inc.</div>
+        <div style={{color:"#e8c5c5",fontSize:"0.9rem",marginBottom:"12px"}}>Enter your access PIN</div>
+        <input
+          type="password"
+          inputMode="numeric"
+          maxLength={6}
+          value={pin}
+          onChange={e => { setPin(e.target.value); setPinError(false); }}
+          onKeyDown={e => e.key === "Enter" && handlePin()}
+          placeholder="••••"
+          style={{width:"100%",padding:"12px",fontSize:"1.5rem",textAlign:"center",borderRadius:"8px",border:pinError?"2px solid #e05555":"2px solid #6B1A2A",background:"#1a0a0f",color:"#C9A84C",letterSpacing:"0.5em",outline:"none",boxSizing:"border-box",marginBottom:"8px"}}
+          autoFocus
+        />
+        {pinError && <div style={{color:"#e05555",fontSize:"0.85rem",marginBottom:"8px"}}>Incorrect PIN. Try again.</div>}
+        <button onClick={handlePin} style={{width:"100%",padding:"12px",background:"#6B1A2A",color:"#C9A84C",border:"none",borderRadius:"8px",fontSize:"1rem",fontWeight:"600",cursor:"pointer",marginTop:"8px"}}>
+          Enter
+        </button>
+      </div>
+    </div>
+  );
 
   if (loading) return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", fontFamily: "'DM Sans', sans-serif", flexDirection: "column", gap: 12 }}>
