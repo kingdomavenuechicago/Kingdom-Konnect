@@ -139,15 +139,27 @@ const FOLLOW_UP_INTERVALS = [
 const NEED_CATEGORIES = ["Housing", "Food & Nutrition", "Mental Health", "Medical", "Legal", "Education Support", "Workforce", "Violence Prevention", "Youth Development", "Transportation", "Clothing & Supplies", "Other"];
 const CPS_SCHOOLS = ["Robeson High School", "Harper High School", "Hope Academy", "CICS Ellison", "Englewood STEM High School", "Christian Fenger Academy", "Other CPS School"];
 
-// ── STORAGE HELPERS ───────────────────────────────────────────────────────────
+// ── SUPABASE HELPERS ──────────────────────────────────────────────────────────
 async function load(key, fallback = null) {
   try {
-    const r = await window.storage.get(key);
-    return r ? JSON.parse(r.value) : fallback;
-  } catch { return fallback; }
+    const { data, error } = await supabase.from("kk_data").select("value").eq("id", key).single();
+    if (error || !data) return fallback;
+    return data.value;
+  } catch(e) { console.error("load error", e); return fallback; }
 }
 async function save(key, value) {
-  try { await window.storage.set(key, JSON.stringify(value)); } catch {}
+  try {
+    console.log("💾 Saving to Supabase:", key);
+    const { error } = await supabase.from("kk_data").upsert({ id: key, value, updated_at: new Date().toISOString() });
+    if (error) console.error("❌ Supabase error:", error);
+    else console.log("✅ Saved:", key);
+  } catch(e) { console.error("❌ Save exception:", e); }
+}
+async function subscribeToKey(key, callback) {
+  return supabase.channel("kk_" + key)
+    .on("postgres_changes", { event: "*", schema: "public", table: "kk_data", filter: `id=eq.${key}` },
+      (payload) => { if (payload.new?.value) callback(payload.new.value); })
+    .subscribe();
 }
 
 function generateId() {
