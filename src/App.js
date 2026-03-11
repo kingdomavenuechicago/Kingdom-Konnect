@@ -137,7 +137,92 @@ const FOLLOW_UP_INTERVALS = [
 ];
 
 const NEED_CATEGORIES = ["Housing", "Food & Nutrition", "Mental Health", "Medical", "Legal", "Education Support", "Workforce", "Violence Prevention", "Youth Development", "Transportation", "Clothing & Supplies", "Other"];
-const CPS_SCHOOLS = ["Robeson High School", "Harper High School", "Hope Academy", "CICS Ellison", "Englewood STEM High School", "Christian Fenger Academy", "Other CPS School"];
+const CPS_SCHOOLS = [
+  "Abbott Elementary School","ACE Technical Charter High School","Acero Charter Network","Addams Elementary School",
+  "Agassiz Elementary School","Air Force Academy High School","Albany Park Multicultural Academy","Alcott College Prep",
+  "Aldridge Elementary School","Alexander Graham Bell Elementary","Amundsen High School","Anzalduas Elementary School",
+  "Armstrong Elementary School","Arria Elementary School","Ashe Elementary School","Aspira Charter Schools",
+  "Austin Polytech High School","Back of the Yards College Prep","Barnard Elementary School","Bass Elementary School",
+  "Beaubien Elementary School","Beidler Elementary School","Belding Elementary School","Bell Elementary School",
+  "Bennett Elementary School","Benson Elementary School","Bethune Elementary School","Blaine Elementary School",
+  "Bond Elementary School","Bontemps Elementary School","Boone Elementary School","Bouchet Math & Science Academy",
+  "Bowmanville Elementary School","Brighton Park Elementary School","Bronzeville Scholastic Institute",
+  "Brooks College Prep","Brown Elementary School","Burbank Elementary School","Burke Elementary School",
+  "Burnham Elementary School","Burr Elementary School","Calumet High School","Cameron Elementary School",
+  "Camp 1302","Carnegie Elementary School","Casals School of Excellence","CICS Bucktown","CICS Chicago Quest",
+  "CICS Ellison","CICS Irving Park","CICS Loomis","CICS Longwood","CICS Prairie","CICS West Belden",
+  "Chavez Elementary School","Chicago Academy High School","Chicago Discovery Academy","Chicago Excel Academy",
+  "Chicago Math & Science Academy","Chicago Military Academy","Chicago Virtual Charter School",
+  "Chicago Vocational Career Academy","Christian Fenger Academy High School","Christopher Elementary School",
+  "Clark Elementary School","Clay Elementary School","Cleveland Elementary School","Clinton Elementary School",
+  "Collins Academy High School","Columbia Explorers Academy","Corliss Early College STEM High School",
+  "Crane Medical Prep High School","Cuffe Elementary School","Curie Metro High School","Curtis Elementary School",
+  "Dahl Elementary School","Daley Elementary School","Darwin Elementary School","Dawes Elementary School",
+  "De Diego Elementary School","De La Cruz Elementary School","Decatur Classical School","DePriest Elementary School",
+  "Devry University Columbus High School","Dewey Elementary School","Disney II Magnet School",
+  "Dixon Elementary School","Douglass Academy High School","Donoghue Elementary School","Dvorak Technology Academy",
+  "Dyett High School for the Arts","Earle Elementary School","Edwards Elementary School","Effective School Leadership Academy",
+  "Eliza Chappell Elementary School","Elizondo Elementary School","Ellen Mitchell Elementary School",
+  "Ellison Elementary School","Elmwood Elementary School","Emmet Elementary School","Englewood STEM High School",
+  "Esmond Elementary School","Evers Elementary School","Exley Elementary School","Fenger Academy High School",
+  "Field Elementary School","Finkl Elementary School","Fiscus Elementary School","Fiske Elementary School",
+  "Flower Vocational High School","Foundations College Prep","Franklin Fine Arts Elementary School",
+  "Fulton Elementary School","Gallistel Language Academy","Gandhi Elementary School","Garfield Elementary School",
+  "Goethe Elementary School","Gompers Elementary School","González Elementary School","Goodlow Elementary School",
+  "Graham Elementary School","Grant Elementary School","Green Elementary School","Gregory Elementary School",
+  "Grover Cleveland Elementary School","Gresham Elementary School","Guggenheim Elementary School",
+  "Gwendolyn Brooks College Prep","Hamilton Elementary School","Hamline Elementary School","Harper High School",
+  "Harvard Elementary School","Harlan Community Academy","Hartigan Elementary School","Haugan Elementary School",
+  "Haven Elementary School","Hawthorn Elementary School","Hayes Elementary School","Henderson Elementary School",
+  "Henry Elementary School","Hernandez Elementary School","Herzl Elementary School","Hibbard Elementary School",
+  "Higgins Elementary School","Hope Academy","Hope Elementary School","Horizons in Learning","Houston Elementary School",
+  "Hubbard High School","Hughes Elementary School","Hyde Park Academy High School","Hynes Elementary School",
+  "Ida B. Wells Preparatory Academy","Iñiguez Elementary School","Inter-American Magnet School",
+  "Irving Elementary School","Ishamael Bethea Elementary School","Jackson Elementary School","Jacobs Elementary School",
+  "Jamieson Elementary School","Jenner Elementary School","Jensen Elementary School","Jirka Elementary School",
+  "Johnson Elementary School","Joliet Elementary School","Jones College Prep High School","Jordan Community School",
+  "Jordan Elementary School","Julian High School","Kellman Corporate Community School","Kelly High School",
+  "Kennedy High School","Kenwood Academy High School","King Elementary School","King High School",
+  "Kinzie Elementary School","Kipling Elementary School","Kipp Chicago","Kohn Elementary School",
+  "La Vergne Elementary School","Lake View High School","Langford Elementary School","Laramie Elementary School",
+  "Lavizzo Elementary School","Lawson Elementary School","Lawndale Elementary School","LeMoyne Elementary School",
+  "Lewis Elementary School","Linder Elementary School","Linne Elementary School","Lisle Elementary School",
+  "Little Village Academy","Little Village High School","Logan Elementary School","Lopez Elementary School",
+  "Louisa May Alcott Elementary School","Lovett Elementary School","Lujan Elementary School","Luther High School North",
+  "Lynne Thigpen Elementary","MacArthur Elementary School","Madrid Elementary School","Manley Career Academy High School",
+  "Mann Elementary School","Marquette Elementary School","Marshall High School","Mather High School",
+  "Mayo Elementary School","McCormick Elementary School","McDade Classical School","McDowell Elementary School",
+  "McNair Elementary School","McPherson Elementary School","Medill Elementary School","Merlo Elementary School",
+  "Metcalfe Community Academy","Mitchell Elementary School","Mollison Elementary School","Monroe Elementary School",
+  "Montessori School of Englewood","Morrill Elementary School","Morton Elementary School","Morton School of Excellence",
+  "Mose Vines Academy","Mulberry STEM Academy","Mullan Elementary School","Munoz Elementary School",
+  "Murphy Elementary School","Murray Language Academy","Myers Elementary School","Manierre Elementary School",
+  "National Teachers Academy","Near North Montessori","Nettelhorst Elementary School","Nobel Elementary School",
+  "Noble Charter Schools","North Grand High School","North Lawndale College Prep","North River Elementary School",
+  "Northside College Prep","Norwood Park Elementary School","O'Keeffe Elementary School","Oak Park Elementary School",
+  "Obama International Studies Elementary","Ogden International School","Orr Academy High School",
+  "Owen Elementary School","Pacca Elementary School","Paderewski Elementary School","Palmer Elementary School",
+  "Pasteur Elementary School","Patton Elementary School","Payton College Prep","Peabody Elementary School",
+  "Perez Elementary School","Perspectives Charter Schools","Peterson Elementary School","Piccolo Elementary School",
+  "Pierce Elementary School","Pilsen Community Academy","Poe Elementary School","Polk Elementary School",
+  "Pope Elementary School","Porter Elementary School","Ravenswood Elementary School","Ray Elementary School",
+  "REACH Charter School","Robeson High School","Robinson Elementary School","Rogers Elementary School",
+  "Ronnow Elementary School","Roosevelt High School","Ross Elementary School","Ruggles Elementary School",
+  "Ruiz Elementary School","Ryan Elementary School","Sabin Dual Language Magnet School","Sandburg Elementary School",
+  "Savage Elementary School","School of Excellence Charter","Schurz High School","Senn High School",
+  "Separation Elementary School","Shields Middle School","Simeon Career Academy","Simpson Academy",
+  "Skinner Elementary School","Skinner North Classical School","Smyth Elementary School","Solorio Academy High School",
+  "South Shore International College Prep","Spencer Technology Academy","Stagg Elementary School",
+  "Stanton Elementary School","Staples Elementary School","Stewart Elementary School","Stone Elementary School",
+  "Sullivan High School","Sumner Math & Science Academy","Sutherland Elementary School","Swift Elementary School",
+  "Taft High School","Talcott Elementary School","Thorp Elementary School","Tilden Career Community Academy",
+  "Tonti Elementary School","Trumbull Elementary School","Uplift Community High School","Urban Prep Academy",
+  "Vaughn Occupational High School","Voise Academy High School","Von Humboldt Elementary School",
+  "Von Steuben Metro Science High School","Wagoner Elementary School","Ward Elementary School","Warren Elementary School",
+  "Waters Elementary School","Wentworth Elementary School","West Pullman Elementary School","West Ridgeland Elementary School",
+  "Westinghouse College Prep","Williams Elementary School","Wilson Elementary School","Woodson North School",
+  "Woodson South Elementary School","Young Magnet High School","Other CPS School"
+].sort();
 
 // ── SUPABASE HELPERS ──────────────────────────────────────────────────────────
 async function load(key, fallback = null) {
@@ -553,8 +638,8 @@ function IntakeForm({ navigators, partners, onSubmit }) {
   const toggleNeed = n => set("needCategories", form.needCategories.includes(n) ? form.needCategories.filter(x => x !== n) : [...form.needCategories, n]);
 
   const handleSubmit = async () => {
-    if (!form.contactName || !form.contactPhone || form.needCategories.length === 0) {
-      alert("Please fill in contact name, phone, and at least one area of need.");
+    if (!form.contactName || !form.contactPhone || !form.school || form.needCategories.length === 0) {
+      alert("Please fill in contact name, phone, school, and at least one area of need.");
       return;
     }
     const today = new Date().toISOString().split("T")[0];
@@ -1241,6 +1326,11 @@ function PublicIntake() {
   });
   const [submitted, setSubmitted] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [schoolSearch, setSchoolSearch] = useState("");
+  const [showSchoolList, setShowSchoolList] = useState(false);
+  const filteredSchools = schoolSearch.length > 1
+    ? CPS_SCHOOLS.filter(s => s.toLowerCase().includes(schoolSearch.toLowerCase())).slice(0, 10)
+    : [];
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const toggleNeed = n => set("needCategories", form.needCategories.includes(n) ? form.needCategories.filter(x => x !== n) : [...form.needCategories, n]);
@@ -1328,6 +1418,32 @@ function PublicIntake() {
                   style={{width:"100%",padding:"10px",background:"#1a0a0f",border:"1px solid #6B1A2A",borderRadius:"6px",color:"#e8c5c5",fontSize:"0.9rem",boxSizing:"border-box"}} />
               </div>
             ))}
+            {/* School search */}
+            <div style={{gridColumn:"1/-1",position:"relative"}}>
+              <label style={{color:"#C9A84C",fontSize:"0.85rem",display:"block",marginBottom:"6px"}}>Child's School *</label>
+              <input
+                type="text"
+                placeholder="Type to search CPS schools…"
+                value={form.school || schoolSearch}
+                onChange={e => { setSchoolSearch(e.target.value); set("school",""); setShowSchoolList(true); }}
+                onFocus={() => setShowSchoolList(true)}
+                onBlur={() => setTimeout(() => setShowSchoolList(false), 200)}
+                style={{width:"100%",padding:"10px",background:"#1a0a0f",border: form.school ? "1px solid #C9A84C" : "1px solid #6B1A2A",borderRadius:"6px",color:"#e8c5c5",fontSize:"0.9rem",boxSizing:"border-box"}}
+              />
+              {showSchoolList && filteredSchools.length > 0 && (
+                <div style={{position:"absolute",top:"100%",left:0,right:0,background:"#2a0a12",border:"1px solid #6B1A2A",borderRadius:"6px",zIndex:100,maxHeight:"220px",overflowY:"auto"}}>
+                  {filteredSchools.map(s => (
+                    <div key={s} onMouseDown={() => { set("school",s); setSchoolSearch(s); setShowSchoolList(false); }}
+                      style={{padding:"10px 12px",color:"#e8c5c5",cursor:"pointer",fontSize:"0.9rem",borderBottom:"1px solid #3a1a22"}}
+                      onMouseEnter={e => e.target.style.background="#3a1a22"}
+                      onMouseLeave={e => e.target.style.background="transparent"}>
+                      {s}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {form.school && <div style={{color:"#C9A84C",fontSize:"0.75rem",marginTop:"4px"}}>✓ {form.school}</div>}
+            </div>
           </div>
         </div>
 
